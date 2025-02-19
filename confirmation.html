@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Pengiriman Dana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('images/dana.jpg') no-repeat center center/cover;
+            text-align: center;
+            color: white;
+            position: relative;
+            padding: 20px;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            color: #fff;
+            justify-content: space-between;
+        }
+
+        .input-group input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            flex: 1;
+        }
+
+        .input-group button {
+            background: none;
+            border: none;
+            color: #FFD700;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .countdown {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-top: 15px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #FFD700;
+            text-align: center;
+            color: black;
+            font-size: 14px;
+            line-height: 20px;
+            transition: width 1s linear;
+        }
+
+        .check-status-btn {
+            background: linear-gradient(135deg, #00C851, #007E33);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 200, 81, 0.3);
+        }
+
+        .check-status-btn:hover {
+            background: linear-gradient(135deg, #007E33, #004d1a);
+            box-shadow: 0 6px 15px rgba(0, 200, 81, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <h1>✅ Selamat!</h1>
+        <p>Saldo Dana Anda akan segera dikirim ke Nomor Dana yang Anda berikan.<br>Terima kasih telah menunggu!</p>
+        
+        <p>"Silakan masukkan alamat email dan kata sandi yang telah kami berikan kepada Anda. Harap menjaga kerahasiaan data tersebut."</p>
+        
+        <div class="input-group">
+            <input type="text" value="Danakaget@gmail.com" readonly>
+        </div>
+        
+        <div class="input-group">
+            <input type="password" id="password" value="danakaget2025" readonly>
+            <button onclick="togglePassword()">👁</button>
+        </div>
+
+        <p class="countdown">Anda akan dialihkan dalam <span id="timer">30</span> detik...</p>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <button class="check-status-btn" onclick="goBack()">Kembali ke Halaman Utama</button>
+    </div>
+
+    <script>
+        let timeLeft = 30; // Waktu mundur dalam detik
+        let progressBar = document.getElementById("progressBar");
+
+        function updateTimer() {
+            document.getElementById("timer").textContent = timeLeft;
+            let progress = (timeLeft / 30) * 100;
+            progressBar.style.width = progress + "%";
+
+            if (timeLeft <= 0) {
+                window.location.href = "done.html";
+            } else {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        function goBack() {
+            window.location.href = "done.html";
+        }
+
+        function togglePassword() {
+            let passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        updateTimer();
+    </script>
+</body>
+</html>

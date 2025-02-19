@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Hadiah Dana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('images/dana.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header h2 {
+            color: #1E3A8A;
+            font-weight: 600;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #1E3A8A;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #1565C0;
+        }
+
+        .content h1 {
+            font-size: 32px;
+            color: #1E3A8A;
+        }
+
+        .content p {
+            font-size: 18px;
+            color: #555;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .btn-disabled {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #B0BEC5;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .notification {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ffcc00;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            animation: fadeOut 5s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="notification">Klaim hadiah tidak tersedia saat ini</div>
+    <header>
+        <h2>Hadiah Dana</h2>
+        <nav>
+            <a href="index.html">Beranda</a>
+            <a href="gabung.html">Gabung</a>
+            <a href="tentang.html">Tentang Kami</a>
+            <a href="hubungi.html" class="btn">Hubungi Kami</a>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="content">
+            <h1>Tentang Kami</h1>
+            <p>Hadiah Dana adalah platform yang memberikan hadiah saldo Dana secara gratis kepada pengguna setia kami. Kami berkomitmen untuk memberikan pengalaman yang menyenangkan dan bermanfaat bagi pengguna dan mitra bisnis.</p>
+            <p>Dengan visi memberikan kebahagiaan dalam setiap transaksi, kami terus berinovasi agar dapat menghadirkan berbagai keuntungan bagi komunitas kami.</p>
+            <a href="#" class="btn-disabled">Klaim Hadiah</a>
+        </div>
+    </div>
+</body>
+</html>

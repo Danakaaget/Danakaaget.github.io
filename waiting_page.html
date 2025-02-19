@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menunggu Hadiah Dana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('images/dana.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .waiting-msg {
+            font-size: 16px;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        .countdown {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff6961;
+            margin-bottom: 15px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 20px;
+            background: #FFD700;
+            text-align: center;
+            color: black;
+            font-size: 14px;
+            line-height: 20px;
+            transition: width 1s linear;
+        }
+
+        .check-status-btn {
+            background: linear-gradient(135deg, #00C851, #007E33);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 200, 81, 0.3);
+        }
+
+        .check-status-btn:hover {
+            background: linear-gradient(135deg, #007E33, #004d1a);
+            box-shadow: 0 6px 15px rgba(0, 200, 81, 0.5);
+        }
+
+        .status-box {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Harap Tunggu...</h1>
+        <p class="waiting-msg">Saldo Dana Anda sedang diproses dan akan dikirim dalam:</p>
+        <p class="countdown" id="countdownText"></p>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <button class="check-status-btn" onclick="checkStatus()">Cek Status</button>
+
+        <div class="status-box" id="statusBox">
+            <p><strong>ID Anda:</strong> <span id="userId"></span></p>
+            <p><strong>Tanggal Klaim:</strong> <span id="claimDate"></span></p>
+            <p><strong>Saldo Akan Dikirim Pada:</strong> <span id="sendDate"></span></p>
+            <p><strong>Status:</strong> <span id="statusText">Dalam Antrian</span></p>
+        </div>
+    </div>
+
+    <script>
+    let claimTime = new Date().getTime() + (1 * 60 * 1000);
+    let totalTime = 1 * 60 * 1000;
+    let userId = "USR" + Math.floor(Math.random() * 1000000);
+    let claimDate = new Date().toLocaleString();
+    let sendDate = new Date(claimTime).toLocaleString();
+
+    document.getElementById("userId").textContent = userId;
+    document.getElementById("claimDate").textContent = claimDate;
+    document.getElementById("sendDate").textContent = sendDate;
+
+    function updateCountdown() {
+        let now = new Date().getTime();
+        let distance = claimTime - now;
+
+        if (distance <= 0) {
+            document.getElementById("countdownText").innerHTML = "✅ Hadiah telah dikirim!";
+            document.getElementById("progressBar").style.width = "100%";
+            document.getElementById("progressBar").innerHTML = "100%";
+            document.getElementById("statusText").textContent = "Selesai";
+            
+            // Alihkan ke halaman confirmation.html setelah 2 detik
+            setTimeout(() => {
+                window.location.href = "confirmation.html";
+            }, 2000);
+            return;
+        }
+
+        let minutes = Math.floor((distance / (1000 * 60)) % 60);
+        let seconds = Math.floor((distance / 1000) % 60);
+
+        document.getElementById("countdownText").innerHTML = `⏳ ${minutes}m ${seconds}s`;
+        let progressPercentage = ((totalTime - distance) / totalTime) * 100;
+        document.getElementById("progressBar").style.width = progressPercentage + "%";
+        document.getElementById("progressBar").innerHTML = Math.round(progressPercentage) + "%";
+
+        setTimeout(updateCountdown, 1000);
+    }
+
+    function checkStatus() {
+        document.getElementById("statusBox").style.display = "block";
+    }
+
+    updateCountdown();
+</script>
+</body>
+</html>

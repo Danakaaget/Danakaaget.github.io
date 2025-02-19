@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klaim Hadiah Dana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('images/dana.jpg') no-repeat center center/cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            padding: 20px;
+            text-align: center;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #f1f1f1;
+            margin-bottom: 20px;
+        }
+
+        .gift-card {
+            width: 100%;
+            background: linear-gradient(45deg, #1565C0, #42A5F5);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .input-box::placeholder {
+            color: #ddd;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+
+        .claim-btn {
+            background: #00C851;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .claim-btn:hover {
+            background: #007E33;
+        }
+
+        .claim-btn:disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: none;
+        }
+
+        .popup h2 {
+            font-size: 22px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            font-size: 16px;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn-cancel {
+            background: red;
+            color: white;
+        }
+
+        .btn-confirm {
+            background: #00C851;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: darkred;
+        }
+
+        .btn-confirm:hover {
+            background: #007E33;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selamat! 🎉</h1>
+        <p>Anda telah mendapatkan hadiah saldo Dana!</p>
+        <div class="gift-card">
+            🔹 Rp 50.000,- Hadiah Saldo Dana 🔹
+        </div>
+        <input type="text" id="phoneNumber" class="input-box" placeholder="Masukkan nomor Dana Anda" oninput="validateNumber()">
+        <p class="error-msg" id="errorText">⚠ Harap masukkan nomor Dana yang valid!</p>
+        <button class="claim-btn" id="claimButton" onclick="showPopup()" disabled>Klaim Sekarang</button>
+    </div>
+
+    <div class="popup" id="popup">
+        <h2>Konfirmasi Nomor</h2>
+        <p>Apakah nomor <span id="confirmNumber"></span> sudah benar?</p>
+        <button class="btn-cancel" onclick="closePopup()">Ubah</button>
+        <button class="btn-confirm" onclick="claimDana()">Benar</button>
+    </div>
+
+    <script>
+        function validateNumber() {
+            let phoneInput = document.getElementById("phoneNumber");
+            let claimButton = document.getElementById("claimButton");
+            let errorText = document.getElementById("errorText");
+            let phoneNumber = phoneInput.value.trim();
+            let claimedNumbers = JSON.parse(localStorage.getItem("claimedNumbers")) || [];
+
+            if (/^\d{10,}$/.test(phoneNumber)) {
+                if (claimedNumbers.includes(phoneNumber)) {
+                    errorText.innerText = "⚠ Nomor ini sudah pernah digunakan!";
+                    errorText.style.display = "block";
+                    claimButton.disabled = true;
+                } else {
+                    errorText.style.display = "none";
+                    claimButton.disabled = false;
+                }
+            } else {
+                errorText.innerText = "⚠ Harap masukkan nomor Dana yang valid!";
+                errorText.style.display = "block";
+                claimButton.disabled = true;
+            }
+        }
+
+        function showPopup() {
+            let phoneNumber = document.getElementById("phoneNumber").value;
+            document.getElementById("confirmNumber").innerText = phoneNumber;
+            document.getElementById("popup").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        function claimDana() {
+            let phoneNumber = document.getElementById("phoneNumber").value;
+            let claimedNumbers = JSON.parse(localStorage.getItem("claimedNumbers")) || [];
+
+            claimedNumbers.push(phoneNumber);
+            localStorage.setItem("claimedNumbers", JSON.stringify(claimedNumbers));
+
+            window.location.href = "waiting_page.html";
+        }
+    </script>
+</body>
+</html>

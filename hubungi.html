@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubungi Kami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('images/dana.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .contact-box {
+            flex: 1;
+            min-width: 280px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .contact-box h2 {
+            font-size: 22px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .contact-box p {
+            font-size: 16px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .contact-box a {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #FFC107;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-box a:hover {
+            color: #FFA000;
+        }
+
+        /* Tombol Beranda */
+        .home-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #00C851;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .home-btn:hover {
+            background: #007E33;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hubungi Kami</h1>
+        <p>Ingin menghubungi kami? Kami dengan senang hati akan membantu Anda.</p>
+
+        <div class="contact-container">
+            <!-- Kotak untuk Sales -->
+            <div class="contact-box">
+                <h2>📞 Nomor Whatsapp Resmi Kami</h2>
+                <p>Jika ada Yang ingin ditanyakan seputar dana kaget anda bisa chat ke nomor whatsapp resmi kami.</p>
+                <a href="tel:+6281234567890">+62 812 3456 7890</a>
+            </div>
+
+            <!-- Kotak untuk Customer Support -->
+            <div class="contact-box">
+                <h2>💬 Dukungan Pelanggan</h2>
+                <p>Butuh bantuan? Tim support kami siap membantu Anda.</p>
+                <a href="mailto:support@email.com">support@email.com</a>
+            </div>
+        </div>
+
+        <!-- Tombol Beranda -->
+        <a href="lagi.html" class="home-btn">Kembali ke Beranda</a>
+    </div>
+</body>
+</html>
