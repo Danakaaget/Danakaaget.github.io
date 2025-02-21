@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("tD00uUjD3gs5N23Hl"); // Ganti dengan User ID dari EmailJS
+        })();
+    </script>
     <style>
         * {
             margin: 0;
@@ -23,6 +29,7 @@
             align-items: center;
             padding: 20px;
             position: relative;
+            overflow: hidden;
         }
 
         body::before {
@@ -43,6 +50,16 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h2 {
@@ -62,6 +79,11 @@
             border-radius: 5px;
             border: none;
             outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .input-box:focus {
+            box-shadow: 0 0 8px rgba(255, 193, 7, 0.8);
         }
 
         .btn {
@@ -75,12 +97,12 @@
             background: #FFC107;
             color: #1E3A8A;
             box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
-            transition: all 0.3s;
+            transition: transform 0.2s, box-shadow 0.3s;
         }
 
-        .btn:hover {
-            background: #FFA000;
-            box-shadow: 0 6px 15px rgba(255, 193, 7, 0.5);
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(255, 193, 7, 0.5);
         }
 
         p {
@@ -91,6 +113,18 @@
             color: #FFC107;
             text-decoration: none;
             font-weight: bold;
+        }
+
+        /* Animasi getar jika input tidak valid */
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
         }
     </style>
 </head>
@@ -107,33 +141,56 @@
 
     <script>
         function register() {
-            let name = document.getElementById("name").value.trim();
-            let email = document.getElementById("email").value.trim();
-            let password = document.getElementById("password").value.trim();
+            let name = document.getElementById("name");
+            let email = document.getElementById("email");
+            let password = document.getElementById("password");
 
-            if (!name || !email || !password) {
+            if (!name.value.trim() || !email.value.trim() || !password.value.trim()) {
                 alert("⚠ Harap isi semua kolom!");
+                addShakeEffect([name, email, password]);
                 return;
             }
 
             let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
+            if (!emailPattern.test(email.value)) {
                 alert("⚠ Email tidak valid!");
+                addShakeEffect([email]);
                 return;
             }
 
             let users = JSON.parse(localStorage.getItem("users")) || {};
 
-            if (users[email]) {
+            if (users[email.value]) {
                 alert("⚠ Email sudah terdaftar, silakan login.");
                 return;
             }
 
-            users[email] = { name, password };
+            users[email.value] = { name: name.value, password: password.value };
             localStorage.setItem("users", JSON.stringify(users));
 
-            alert("✅ Pendaftaran berhasil!");
-            window.location.href = "login.html";
+            sendEmail(name.value, email.value);
+        }
+
+        function sendEmail(name, email) {
+            emailjs.send("service_wnsi4zy", "template_lvl6mhi", {
+                to_name: name,
+                to_email: email,
+                message: "Selamat! Anda berhasil mendaftar.",
+            })
+            .then(function(response) {
+                alert("✅ Pendaftaran berhasil! Email akan segera dikirim ke alamat gmail Anda.");
+                window.location.href = "login.html";
+            }, function(error) {
+                console.log("EmailJS Error:", error);
+                alert("⚠ Pendaftaran berhasil, tetapi email gagal dikirim.");
+            });
+        }
+
+        function addShakeEffect(elements) {
+            elements.forEach(el => {
+                el.classList.add("shake");
+                setTimeout(() => el.classList.remove("shake"), 300);
+            });
         }
     </script>
 </body>
